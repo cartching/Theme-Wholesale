@@ -1,0 +1,255 @@
+<!--/
+	Cartching Template / Theme Wholesale v1.0
+	http://cartching.com | Copyright (c) Cartching, 2011
+/-->
+
+<!-- #EXTENDS file="theme-simple.html" -->
+
+
+
+<!-- #BLOCK for="script_content" -->
+<!-- #IF {{ cart.items }} -->
+<script type="text/javascript">
+<!--
+
+	// Show Hide Billing
+	function enableshippingaddress(visible) {
+		var jShipField = $('.account-shipping');
+		if (visible) {
+			jShipField.show();
+		} else {
+			jShipField.hide();
+		}
+	}
+	
+-->
+</script>
+<!-- #ENDIF -->
+<!-- #ENDBLOCK -->
+
+
+
+<!-- #BLOCK for="pagetitle_area" -->
+
+    <div class="pagetitle_area">    
+	    <div id="pagetitle">
+        	<div class="container">
+
+
+            <!-- #IF {{cart.items}} -->
+            <h1>Shipping to? <span class="amount">/ <span class="currency">{{store.currency_sign}}</span><span class="dollars">{{cart.totalprice | money_dollars}}</span><!-- #IF {{cart.totalprice | money_cents}} --><span class="cents">.{{cart.totalprice | money_cents}}</span><!-- #ENDIF --> <abbr class="currency" title="{{store.currency_name}}">{{store.currency}}</abbr></span></h1>
+            <h2>Please confirm your details below.</h2>
+            
+
+            <div class="checkoutprogress">
+                <ol>
+                    <li id="checkoutprogress-cart"><em>1</em> <a href="/cart/" title="Your Cart">Your Cart</a></li>
+                    <li id="checkoutprogress-checkout" class="active"><em>2</em> <a href="/checkout/" title="Shipping Detais">Shipping</a></li>
+                    <li id="checkoutprogress-payment"><em>3</em> <a href="/payment/" title="Payment Detais">Payment</a></li>
+                    <li id="checkoutprogress-receipt"><em>4</em> <span title="Receipt">Receipt</span></li>
+                </ol>
+            </div>
+
+            <!-- #ELSE -->
+            
+                <h1>Doh!</h1>
+                <h2>Your Cart is empty!<br /><a href="{{store.url}}" class="continue">Continue shopping</a></h2>
+            
+            <!-- #ENDIF -->
+
+
+            </div>
+		</div>
+	</div>
+
+
+<!-- #ENDBLOCK -->
+
+
+
+<!-- #BLOCK for="content_area" -->
+
+
+<!-- #IF {{customer.loggedin}} -->
+<!-- #ELSE -->
+
+    <div class="account-register">
+    
+        <h3>Do you already have an account?</h3>
+        <p>I would like to be able to save my addresses and check my order status. <a href="/account#create">Create an Account</a></p>
+    
+        <h3>Yes! <em>I have a account.</em> <a href="/account/">Sign In</a></h3> 
+    
+    </div>
+
+<!-- #ENDIF -->
+
+
+<!-- #IF {{cart.items}} -->
+<form action="/checkout" method="post" id="form-checkout">
+<input type="hidden" name="customer.id" value="{{customer.id}}" />
+
+
+    
+    <div class="account-personal">
+        <fieldset>
+            <legend>Personal Details</legend>
+            <ul>
+                <li>
+                    <label>Full Name</label>
+                    <input name="customername" type="text" id="customername" value="{{cart.customer.name}}" class="text lrg required" title="Please provide your Name" />
+                </li>
+                <li>
+                    <label>Email</label>
+                    <input name="customeremail" type="text" id="customeremail" value="{{cart.customer.email}}" class="text lrg required" title="Please provide your Email" />
+                </li>
+                <li>
+                    <label>Phone</label>
+                    <input name="customerphone" type="text" id="customerphone" value="{{cart.customer.phone}}" class="text med" title="Please provide your Phone No." />
+                </li>            
+            </ul>
+        </fieldset>
+    </div>
+
+            
+    <div class="account-billing">
+            
+        <fieldset>
+            <legend>Billing Address</legend>
+            <h4>Please address all invoices and receipts to</h4>
+            <ul>
+                <li>
+                    <label for="billingaddress.street">Address Line 1:</label>
+                    <input name="billingaddress.street" type="text" id="billingaddress.street" value="{{cart.billingaddress.street}}" class="text lrg required" title="Please provide your Street address, P.O. box, company name, c/o" />
+                    <span class="hint">Street address, P.O. box, company name, c/o</span>
+                </li>
+                <li>
+                    <label for="billingaddress.street2">Address Line 2:</label>
+                    <input name="billingaddress.street2" type="text" id="billingaddress.street2" value="{{cart.billingaddress.street2}}" class="text lrg" title="Please provide your Apartment, suite, unit, building, floor, etc." />
+                    <span class="hint">Apartment, suite, unit, building, floor, etc.</span>
+                </li>
+                <li>
+                    <label for="billingaddress.city">City</label>
+                    <input name="billingaddress.city" type="text" id="billingaddress.city" value="{{cart.billingaddress.city}}" class="text lrg required" title="Please provide your City" />
+                </li>
+                <li>
+                    <label for="billingaddress.state">State/Province/Region</label>
+                    <input name="billingaddress.state" type="text" id="billingaddress.state" value="{{cart.billingaddress.state}}" class="text med required" title="Please provide your State/Province/Region" />
+                </li>
+                <li>
+                    <label for="billingaddress.countrycode">Country:</label>
+                    <select name="billingaddress.countrycode" id="billingaddress.countrycode" class="select lrg required" title="Country">
+                        <option>&nbsp;</option>
+                        {{countries | html_options(Name,countrycode,cart.billingaddress.country.countrycode)}}
+                    </select>
+                </li>    
+                <li>
+                    <label for="billingaddress.postcode">ZIP/Postal Code:</label>
+                    <input name="billingaddress.postcode" type="text" id="billingaddress.postcode" value="{{cart.billingaddress.postcode}}" class="text sml required" title="Please provide your ZIP/Postal Code" />
+                </li>
+
+                <li class="checkbox">
+                    <input id="ShipTobillingaddress" type="checkbox" name="ShipTobillingaddress" onclick="enableshippingaddress(!this.checked);" value="true" {{cart.shiptobillingaddress | default('true') | html_checked}} />
+                    <label for="ShipTobillingaddress">Use my Billing address for Shipping</label>
+                </li>
+
+                <li id="account-billing-saveaccount" class="checkbox">
+                    <input type="checkbox" id="billing-saveaccount" name="savebillingaddressAsDefault" value="true" class="checkbox" />
+                    <label for="billing-saveaccount">Save as my default billing details</label>
+                </li>
+
+            </ul>
+        </fieldset>
+
+    </div>
+      
+    
+    <div class="account-shipping" style="{{cart.shiptobillingaddress | default('true') | if('display:none','')}}">
+
+        <fieldset>
+        <legend>Shipping Address</legend>
+        
+            <h4>Complete only if different to the Billing Address</h4>
+            <ul>
+                <li>
+                    <label for="shippingaddress.street">Address Line 1:</label>
+                    <input name="shippingaddress.street" type="text" id="shippingaddress.street" value="{{cart.shippingaddress.street}}" class="text lrg" title="Please provide your Street address, P.O. box, company name, c/o" />
+                    <span class="hint">Street address, P.O. box, company name, c/o</span>
+                </li>
+                <li>
+                    <label for="shippingaddress.street2">Address Line 2:</label>
+                    <input name="shippingaddress.street2" type="text" id="shippingaddress.street2" value="{{cart.shippingaddress.street2}}" class="text lrg" title="Please provide your Apartment, suite, unit, building, floor, etc." />
+                    <span class="hint">Apartment, suite, unit, building, floor, etc.</span>
+                </li>
+                <li>
+                    <label for="shippingaddress.city">City</label>
+                    <input name="shippingaddress.city" type="text" id="shippingaddress.city" value="{{cart.shippingaddress.city}}" class="text lrg" title="Please provide your City" />
+                </li>
+                <li>
+                    <label for="shippingaddress.state">State/Province/Region</label>
+                    <input name="shippingaddress.state" type="text" id="shippingaddress.state" value="{{cart.shippingaddress.state}}" class="text med" title="Please provide your State" />
+                </li>
+                <li>
+                    
+                    <!-- #IF {{cart.shippingaddress.country}} -->
+                    <p>{{cart.shippingaddress.country.name}} ( Delivery: {{cart.shipping.carrier}} )</p>
+                    <!-- #ENDIF -->
+                
+                    <label for="shippingaddress.countrycode">Country:</label>
+                    <select name="shippingaddress.countrycode" id="shippingaddress.countrycode" class="select lrg" title="Country">
+                        <option>&nbsp;</option>
+                        {{countries | html_options(Name,countrycode,cart.shippingaddress.country.countrycode)}}
+                    </select>
+                </li>
+
+                <li>
+                    <label for="shippingaddress.postcode">ZIP/Postal Code:</label>
+                    <input name="shippingaddress.postcode" type="text" id="shippingaddress.postcode" value="{{cart.shippingaddress.postcode}}" maxlength="10" class="text sml" title="Please provide your ZIP/Postal Code" />
+                </li>
+
+
+                <li id="account-shipping-saveaccount" class="checkbox">
+                    <input type="checkbox" id="saveaccount-saveaccount" name="saveshippingaddressasdefault" value="true" class="checkbox" />
+                    <span for="shipping-saveaccount">Save as my default shipping details</span>
+                </li>
+
+            </ul>
+        </fieldset>
+        
+    </div>
+
+
+
+    <div class="yourinfo-instructions">
+
+        <fieldset>
+	        <legend>Additional Order Information</legend>        
+            <ul>
+                <li>
+                    <label>Name this Order</label>
+                    <input id="ordername" name="ordername" type="text" maxlength="50" value="{{cart.name}}" class="text lrg required" title="Please provide a Name for this Order" />
+                </li>
+                <li>
+                    <label>Special/Extra Instructions</label>
+                    <textarea id="specialinstructions" name="specialinstructions" class="textarea xlrg" title="Special/Extra Instructions">{{cart.comments}}</textarea>
+                </li>        
+            </ul>
+        </fieldset>
+    </div>
+    
+ 
+    <div class="clear"></div>
+    
+        
+    <div class="submit checkout">
+        <button type="submit" class="button submit" title="Go to Payment">Go to Payment</button>    
+    </div>
+        
+
+</form>
+
+
+<!-- #ELSE -->
+<!-- #ENDIF -->
+
+<!-- #ENDBLOCK -->

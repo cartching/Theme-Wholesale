@@ -1,0 +1,96 @@
+<!--/
+	Cartching Template / Theme Wholesale v1.0
+	http://cartching.com | Copyright (c) Cartching, 2011
+/-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<title>{{page.title | html_encode}}</title>
+
+<meta http-equiv="imagetoolbar" content="false" />
+<meta http-equiv="imagetoolbar" content="no" />
+<meta name="robots" content="index, follow" />
+<meta name="distribution" content="global" />
+<meta name="copyright" content="{{store | html_encode}}, {{store.url}}" />
+<meta name="author" content="{{store.url}}" />
+<meta name="keywords" content="{{page.metakeywords | html_encode}}" />
+<meta name="description" content="{{page.metadescription | html_encode}}" />
+
+<link rel="author" href="{{store.url}}" />
+<link rel="home" title="home" href="{{store.url}}" />
+<link rel="stylesheet" type="text/css" href="http://static.store-cdn.com/themes/theme-wholesale/theme.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="{{store.files}}/custom.css" media="screen" />
+
+<link rel="canonical" href="{{store.url}}" />
+
+<!-- #IF {{snippets.head-content}} -->
+{{snippets.head-content}}
+<!-- #ELSE -->
+    <!-- 
+        //	- Add a Snippet named "Head Content"
+        //	Example -
+	    //		<meta name="google-site-verification" content="" />
+    	//		<meta name="verify-v1" content="" />
+    -->
+<!-- #ENDIF -->
+
+</head>
+
+<body id="{{page.id}}">
+
+<div class="wrapper">
+
+    <div class="header_area">
+        <div id="header" class="header">
+    
+            <div id="logo">
+                <h2><a href="{{store.url}}" title="{{store | html_encode}}">{{store | html_encode}}</a></h2>
+                <!-- #IF {{page.description}} --><p>{{page.description | html_encode}}</p><!-- #ENDIF -->
+            </div>                    
+            
+        </div>
+    </div>
+
+
+    <div class="content_area">    
+		<div id="content" class="content">
+    
+            <h1>Oh Bugger! We are Offline</h1>
+            <p>If you need urgent assistance please don't hesitate to <a href="mailto:{{store.emailnotification}}">email</a> us.</p>
+
+       </div>
+    </div>       
+
+       
+	<div class="copyright_area">
+        <div id="copyright">
+
+            <div class="cartching">
+                <a href="http://cartching.com/" title="Make yourself a FREE website to sell your products, be up and running in 5 minutes!  Its quick and simple with secure online payments.  No lock-in contracts, No knowledge of web page design or website hosting required. Advanced features also available from $30/month.">Cartching</a>
+            </div>
+            
+            <div class="cite">
+	            <p><cite><abbr title="Copyright">&copy;</abbr> {{store | html_encode}} {{now.year}}.</cite></p>
+            </div>
+
+        </div>
+	</div>
+
+
+</div>
+
+
+<!-- #IF {{snippets.script-content}} -->
+{{snippets.script-content}}
+<!-- #ELSE -->
+    <!-- 
+        // - Add a Snippet named "Script Content"
+        // Like your Google Anayltics Code    
+    -->
+<!-- #ENDIF -->
+   
+</body>
+</html>

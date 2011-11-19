@@ -1,0 +1,366 @@
+<!--/
+	Cartching Template / Theme Wholesale v1.0
+	http://cartching.com | Copyright (c) Cartching, 2011
+/-->
+
+<!-- #EXTENDS file="theme-simple.html" -->
+
+
+
+<!-- #BLOCK for="pagetitle_area" -->
+
+
+    <div class="pagetitle_area">    
+	    <div id="pagetitle">
+        	<div class="container">
+
+
+            <!-- #IF {{cart.items}} -->
+            <h1>Checkout <span class="amount">/ <span class="currency">{{store.currency_sign}}</span><span class="dollars">{{cart.totalprice | money_dollars}}</span><!-- #IF {{cart.totalprice | money_cents}} --><span class="cents">.{{cart.totalprice | money_cents}}</span><!-- #ENDIF --> <abbr class="currency" title="{{store.currency_name}}">{{store.currency}}</abbr></span></h1>
+            
+        
+            <h2>Update your cart<!-- #IF {{cart.shippingrequired}} --><!-- #IF {{cart.shippingaddress.country}} --><!-- Show carrier and pricing -->, <a href="/checkout/" class="checkout" title="Proceed to checkout and purchase the items in your Shopping Cart">checkout</a><!-- #ELSE --><!-- No shipping required -->, <a href="/checkout/" class="checkout" title="Proceed to checkout and purchase the items in your Shopping Cart">checkout</a>
+                    <!-- #ENDIF -->
+                <!-- #ENDIF --> 
+                or <a href="{{store.url}}" class="continue" title="Keep shopping">keep shopping</a>
+            </h2>
+            
+            
+            <div class="checkoutprogress">
+                <ol>
+                    <li id="checkoutprogress-cart" class="active"><em>1</em> <a href="/cart/" title="Your Cart">Your Cart</a></li>
+                    <li id="checkoutprogress-checkout"><em>2</em> <a href="/checkout/" title="Shipping Detais">Shipping</a></li>
+                    <li id="checkoutprogress-payment"><em>3</em> <a href="/payment/" title="Payment Detais">Payment</a></li>
+                    <li id="checkoutprogress-receipt"><em>4</em> <span title="Receipt">Receipt</span></li>
+                </ol>
+            </div>
+            
+            <!-- #ELSE -->
+            
+                <h1>Doh! Your Cart is empty</h1>
+                <h3>You can <a href="{{store.url}}" class="continue">continue shopping</a> or <a href="/contact/">contact us</a> for more information.</h3>
+				<p>If you see something you would like to add to your shopping cart when shopping, click the <strong>ADD TO CART</strong> button.</p>
+
+            <!-- #ENDIF -->
+
+
+            </div>
+		</div>
+	</div>
+
+
+<!-- #ENDBLOCK -->
+
+
+
+
+<!-- #BLOCK for="content_area" -->
+
+
+	<!-- #IF {{cart.items}} -->	
+
+		<form action="/cart/update" method="post">
+
+		<div id="product-cartitems">
+	
+    
+			<!-- #FOREACH {{cartitem in cart.items}} --> 
+			<div class="product-container">
+
+			
+                <div class="product-image">
+                    <a href="{{cartitem.url}}" title="Click to view {{cartitem.name | html_encode}}"><img src="{{cartitem.image}}-75x75-85.jpg" alt="{{cartitem.name | html_encode}}" /></a>
+                </div>
+                
+                <div class="product-info">
+                    
+                    <ul class="price-quantity">
+                        <li class="product-price">
+                            <!-- #IF {{cartitem.onsale}} --><span class="fullprice"><del>{{cartitem.fullprice | money}}</del></span><!-- #ENDIF -->						
+                            <span class="retailprice">{{cartitem.price | money}}</span>
+                        </li>
+                        <li class="times"><strong>x</strong></li>
+                        <li class="quantity-select">
+                            <input type="hidden" name="cartitem" value="{{cartitem.id}}" />
+                            <input type="text" name="quantity" value="{{cartitem.quantity}}" maxlength="4" size="3" class="text" title="Update {{cartitem.name | html_encode}} Qty" />
+                        </li>
+                        <li class="equals"><strong>=</strong></li>
+                        <li class="quantity-price last">
+                            <strong>{{cartitem.qtyprice | money}}</strong>
+                        </li>
+                    </ul>
+
+                    <h3><a href="{{cartitem.url}}" title="Click to view {{cartitem.name | html_encode}}">{{cartitem.name | html_encode}}</a></h3>
+                    <!-- #IF {{cartitem.hasvariation}} -->
+                    <h4>{{cartitem.variation.name | html_encode}}</h4>
+                    <!-- #ENDIF -->
+
+                    <div class="shipping-product-admin">
+                        <p class="product-admin">
+
+							<button type="submit" class="button updatecart" title="Update the item/s in your Cart">Update</button>
+                            <button type="submit" name="cartitem" value="{{cartitem.id}}"  class="button remove" title="Remove - {{cartitem.name | html_encode}}">Remove</button>                            
+
+                        </p>
+                        
+                    </div>
+                                    
+                </div>
+    
+			
+			</div>
+			<!-- // product-container -->
+			<!-- #NEXT -->
+
+
+
+			<div class="cart-nav">
+
+                <!-- #IF {{cart.shippingrequired}} -->
+                
+                    <!-- #IF {{cart.shippingaddress.country}} -->                         
+                    <!-- // show carrier and pricing -->
+                    
+                        <div class="cart-shipping" id="shipping-edit" style="display:none;">
+	
+    	                	<fieldset>                            
+                                <legend>Shipping To</legend>                        
+                                <ul>
+                                    <li><label for="country">Currently Shipping to</label>
+                                        <select name="country" id="country" class="select lrg" title="Your Country">
+                                        <option>&nbsp;</option>
+                                            {{countries|html_options(Name,countrycode,cart.shippingaddress.country.countrycode)}}
+                                        </select>
+                                    </li>
+                                    <li>
+                                        <label for="postcode">ZIP/Postal Code</label>
+                                        <input name="postcode" type="text" id="postcode" value="{{cart.shippingaddress.postcode}}" maxlength="10" class="text sml" title="ZIP/Postal Code" />
+                                    </li>
+                                    
+                                    <li class="submit"><button type="submit" class="button updatecart" title="Calculate">Calculate</button></li>
+                                    
+                                    <li class="last"><a title="Cancel" class="cancel" onClick=" $('#shipping-edit').slideUp('slow');$('#shipping-btn').fadeIn(); return false; " href="#">Cancel</a></li>
+                                </ul>
+                    		
+                            </fieldset>
+                    
+                        </div>
+                        
+                    <!-- #ENDIF -->
+                
+                
+                <!-- #ELSE -->
+                
+                
+                    <!-- #IF {{cart.shippingaddress.country | not}} -->            
+                    <!-- // prompt for shipping country | shippingaddress -->
+                    
+                    <div class="cart-shipping">
+
+                    	<fieldset>
+                            <legend>Shipping To?</legend>
+                            <p>We need to know your address in order to tell you how much it will cost. <br /><strong>*Note.</strong> The subtotal does not yet include applicable tax or shipping and handling charges.</p>
+                            
+                            <ul>
+                                <li><label for="country">Your Country</label>
+                                    
+                                    <select name="country" id="country" class="select lrg" title="Your Country">
+                                        <option>&nbsp;</option>
+                                        {{countries|html_options(Name,countrycode,Cart.shippingaddress.country.countrycode)}}
+                                    </select>
+                                </li>
+                                <li>
+                                    <label for="postcode">ZIP/Postal Code</label>
+                                    <input name="postcode" type="text" id="postcode" maxlength="10" value="{{cart.shippingaddress.postcode}}" class="text sml" title="ZIP/Postal Code" />
+                                </li>
+                                <li class="submit"><button type="submit" class="button updatecart" title="Calculate">Calculate</button></li>
+                            </ul>
+                        </fieldset>
+                    
+                    </div>
+                        
+                    <!-- #ENDIF -->
+                
+                
+                <!-- #ENDIF -->
+
+
+                 
+                <div class="coupon" id="coupon-edit" <!-- #IF {{cart.coupon.name}} -->style="display:none"<!-- #ENDIF -->>
+                <fieldset>
+                    <legend>Discount Coupon</legend>
+                    <ul>
+                        <li>
+                            <label>Coupon Code</label>
+                            <input type="text" name="coupon" value="" maxlength="20" class="text med" title="Coupon Code" />
+                        </li>
+                        
+                        <li class="submit"><button type="submit" class="button updatecart" title="Get your Discount">Get</button></li>
+
+                        <!-- #IF {{cart.coupon.name}} -->
+                        <li class="last"><a href="#" class="cancel" title="Cancel" onClick=" $('#coupon-edit').slideUp('slow');$('#coupon-btn').fadeIn('slow'); return false;">Cancel</a></li>
+                        <!-- #ENDIF -->
+
+                    </ul>
+                </fieldset>               
+                </div>
+
+
+
+			</div>
+            <!-- // cart-nav -->
+
+
+
+
+            <div class="cart-totals">
+            
+            
+                    <div class="purchase-details">		   
+            
+                        <!-- #IF {{cart.shippingrequired}} -->
+                            <!-- #IF {{cart.shippingaddress.country}} -->			 
+                    
+                                <div class="cart-shippingaddress">
+            
+                                    <p>Shipping to {{cart.shippingaddress.country}} <!-- #IF {{cart.shippingaddress.postcode}} --><em>{{cart.shippingaddress.postcode}}</em><!-- #ENDIF -->, with <strong>{{cart.shipping.carrier}}</strong>. <span id="shipping-btn">(<a href="#" onClick="$('#shipping-btn').hide();$('#shipping-edit').fadeIn('slow'); return false;">Edit</a>)</span></p>
+            
+                                </div>
+                                        
+                            <!-- #ENDIF -->			
+                        <!-- #ENDIF -->
+            
+                
+                        <!-- #IF {{cart.discount}} -->
+                        <div class="coupon-details">
+            
+                            <h3>{{cart.coupon.name}}</h3>
+                            
+                            <p><!-- #IF {{cart.coupon.description}} -->{{cart.coupon.description}} <!-- #ENDIF --><span id="coupon-btn"><a onClick="$('#coupon-btn').fadeOut('slow');$('#coupon-edit').fadeIn('slow'); return false;" href="#">(Edit)</a></span></p>
+            
+                        </div>
+                        <!-- #ENDIF -->
+                
+                    </div>
+                    <!-- // purchase-details -->
+            
+            
+            
+                    <div class="purchase-totals">
+            
+                        <ul>
+                            <li class="subtotal">
+                                <span class="first">Cart subtotal <!-- #IF {{cart.taxesincluded}} --><strong>(incl. tax)</strong><!-- #ELSE --><strong>(ex. tax)</strong><!-- #ENDIF --></span>
+                                <span class="last">{{cart.subtotal | money}}</span>
+                            </li>                                     
+                
+                            <!-- #IF {{cart.shippingrequired}} -->
+                            
+                                <!-- #IF {{cart.shippingaddress.country}} -->
+                                <!-- // show carrier and pricing -->
+                                <li class="shipping">
+                                    <span class="first">Shipping &amp; Handling</span>
+                                    <span class="last">{{cart.shipping.cost | money}}</span>
+                                </li>
+                                <!-- #ELSE -->
+                                <!-- // no shipping required -->
+                                <li>
+                                    <span class="first">Delivery</span>
+                                    <span class="last">No Shipping Required.</span>
+                                </li>
+                                <!-- #ENDIF -->
+
+                            <!-- #ELSE -->
+		                	<!-- // No Shipping Details Set -->
+                                
+                                <!-- #IF {{cart.shippingaddress.country | not}} -->
+                                <li class="shipping">
+                                    <span class="first">Shipping to be added.</span>
+                                    <span class="last">{{cart.shipping.cost | money}}</span>
+                                </li>
+                                <!-- #ENDIF -->
+                    
+                            <!-- #ENDIF -->                                        
+                
+                            <!-- #IF {{cart.coupon}} -->
+                            <li class="discount">
+                                <span class="first"><em>{{cart.coupon.name}}</em> | Discount <strong>({{cart.discount.percentage}}%)</strong></span>
+                                <span class="last">{{cart.discount.amount | money}}</span>
+                            </li>
+                            <!-- #ENDIF -->
+                                        
+                            <!-- #IF {{cart.taxesincluded | not}} -->
+                            <li class="tax">
+                                <span class="first">Tax ({{cart.tax.percentage}}%):</span>
+                                <span class="last">{{cart.tax.amount | money}}</span>
+                            </li>
+                            <!-- #ENDIF -->
+                    
+                            <li class="total">
+                                <span class="first">Order Total <abbr class="currency" title="{{store.currency_name}}">{{store.currency}}</abbr></span>
+                                <span class="last">{{cart.totalprice | money}}</span>
+                            </li>
+
+                            <!-- #IF {{cart.taxesincluded}} -->
+                            <li class="tax">
+                                <span class="first">Includes Tax ({{cart.tax.percentage}}%):</span>
+                                <span class="last">{{cart.tax.amount | money}}</span>
+                            </li>
+                            <!-- #ENDIF -->
+                    
+                        </ul>
+                
+                    </div>
+                    <!-- // purchase-totals -->
+                
+            
+                <div class="clear"></div>
+                
+            </div>
+            <!-- // cart-totals -->
+
+
+	</div>
+	<!-- // product-cartitems -->
+
+
+	
+    <div class="submit cart">
+        <a href="/checkout/" class="button checkout">Checkout</a>
+    </div>
+
+
+	</form>
+
+	    
+	<!-- #ELSE -->
+	<!-- #ENDIF -->
+
+
+<!-- #ENDBLOCK -->
+
+
+
+<!-- #BLOCK for="script_content" -->
+<script type="text/javascript">
+	$(document).ready(function(){
+	
+		// add the remove crt item form to the body
+		var $form = $('<form action="/cart/update" style="display:none" method="post"><input id="removecartitem" name="cartitem" type="hidden" value="" /><input name="quantity" type="hidden" value="0" /></form>');
+		$('body').append($form);
+	
+		$('button.button.remove')
+			.show() // make the remove buttons visible, since we have javascript
+			.click(function(){
+				var $button = $(this);
+				$('#removecartitem', $form).val($button.val());
+				
+				var msg = $button.attr('title') || "You're about to remove this item!";
+
+				if (confirm(msg))
+					$form.submit();
+			});
+	});
+
+</script>
+<!-- #ENDBLOCK -->

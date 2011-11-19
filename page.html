@@ -1,0 +1,26 @@
+<!--/
+	Cartching Template / Theme Wholesale v1.0
+	http://cartching.com | Copyright (c) Cartching, 2011
+/-->
+
+<!-- #EXTENDS file="theme-simple.html" -->
+
+
+<!-- #BLOCK for="pagetitle_area" -->
+
+    <div class="pagetitle_area">    
+	    <div id="pagetitle">
+        	<div class="container">
+
+				<h1 title="{{page.title | html_encode}}">{{page.title}} <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{page.editurl}}">(Edit)</a><!-- #ENDIF --></h1>
+
+            </div>
+		</div>
+	</div>
+
+<!-- #ENDBLOCK -->
+
+
+<!-- #BLOCK for="content_area" -->
+<div class="customcontent html">{{page.content}}</div>    
+<!-- #ENDBLOCK -->

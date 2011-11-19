@@ -1,0 +1,107 @@
+<!--/
+	Cartching Template / Theme Wholesale v1.0
+	http://cartching.com | Copyright (c) Cartching, 2011
+/-->
+
+<!-- #EXTENDS file="theme.html" -->
+
+
+
+<!-- #BLOCK for="breadcrumbs_area" -->
+
+    <div class="breadcrumbs">
+        <ol>
+            <li class="crumb home first"><a href="/shop/">Home</a></li>
+            <!-- #IF {{category}} -->
+                <!-- #IF {{category.parents}} -->
+                    <!-- #FOREACH {{pcat in category.parents}} -->
+                        <li class="crumb"><a href="{{pcat.url}}">{{pcat}}</a></li>
+                    <!-- #NEXT -->
+    
+                <!-- #ENDIF -->
+                <li class="crumb current"><a href="{{category.url}}">{{category.name}}</a></li>
+            <!-- #ELSE -->
+                <li class="crumb back"><a href="javascript:history.go(-1)">Back to List</a></li>
+            <!-- #ENDIF -->
+            <li class="crumb last">{{product}}</li>
+        </ol>
+    </div>
+
+<!-- #ENDBLOCK -->
+
+
+
+
+
+
+<!-- #BLOCK for="pagetitle_area" -->
+<!-- #ENDBLOCK -->
+
+
+
+
+
+<!-- #BLOCK for="content_area" -->
+
+
+
+<h1 class="pagetitle" title="{{category.name | html_encode}}">{{category.name | html_encode}} <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{category.editurl}}">(Edit)</a><!-- #ENDIF --></h1>
+
+
+
+<!-- #IF {{category.description}} -->
+<div class="category-description html">{{category.description}}</div>
+<!-- #ENDIF -->
+
+
+<!-- #IF {{category.products}} -->
+<!-- #var {{ pagedProducts = category.products | paged(12) }} -->
+    
+    <div class="product-list featured">
+    
+    	<!-- #FOREACH {{product in pagedProducts }} -->
+        <!-- # FOREACH { { product in category.products } } -->
+        <div class="hproduct product-listitem {{product.slug}}">
+        <div class="inner">
+    
+            <div class="product-photo">
+                <a title="{{product.name | html_encode}} / {{product.price | money}}" href="{{product.url}}" class="url" rel="product"><img src="{{product.image}}-200x230-90.jpg" alt="{{product.excerpt | html_encode}}" class="photo" /></a>
+            </div>
+    
+            <p class="price">
+                <!-- #IF {{product.onsale}} -->
+                <del><span class="currency">{{store.currency_sign}}</span><span class="dollars">{{product.fullprice | money_dollars}}</span><!-- #IF {{product.fullprice | money_cents}} --><span class="cents">.{{product.fullprice | money_cents}}</span><!-- #ENDIF --></del>
+                <!-- #ENDIF -->
+                <span class="currency">{{store.currency_sign}}</span><span class="dollars">{{product.price | money_dollars}}</span><!-- #IF {{product.price | money_cents}} --><span class="cents">.{{product.price | money_cents}}</span>
+                <!-- #ENDIF -->
+            </p>
+    
+            <h4 class="title" title="{{product.name | html_encode}} / {{product.price | money}}"><a href="{{product.url}}" class="url" rel="product" title="{{product.name | html_encode}}">{{product.name | html_encode}}</a> <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{product.editurl}}">(Edit)</a><!-- #ENDIF --></h4>
+
+        </div>
+        </div>
+        <!--#NEXT -->
+    
+    </div>
+
+
+    <!-- #IF {{pagedProducts.pages}} -->
+    <div class="paging category bottom">
+        {{ pagedProducts | pager }}
+    </div>
+    <!-- #ENDIF -->
+
+
+<!-- #ELSE -->        
+        
+    <div class="hasnoitems">
+    
+        <h2>There are no items for <strong>{{category.name | html_encode}}</strong></h2>
+        <p>However you might find something else your looking for on our store.</p>
+        <p><a href="{{store.url}}" class="continue" title="Continue shopping">Continue shopping</a></p>                 
+    
+    </div>
+                                
+<!-- #ENDIF -->
+
+<!-- #ENDBLOCK -->

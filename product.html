@@ -1,0 +1,419 @@
+<!--/
+	Cartching Template / Theme Wholesale v1.0
+	http://cartching.com | Copyright (c) Cartching, 2011
+/-->
+
+<!-- #EXTENDS file="theme-simple.html" -->
+
+
+
+
+<!-- #BLOCK for="head_content" -->
+<script type="text/javascript" language="javascript">
+
+	// Change Stock Value to Text Description
+	$(function() {
+		$(".stockqty").stockify();
+	});
+
+</script>
+<!-- #ENDBLOCK -->
+
+
+
+
+<!-- #BLOCK for="pagetitle_area" -->
+<!-- #ENDBLOCK -->
+
+
+
+<!-- #BLOCK for="breadcrumbs_area" -->
+
+    <div class="breadcrumbs">
+        <ol>
+            <li class="crumb home first"><a href="/shop/">Home</a></li>
+            <!-- #IF {{category}} -->
+                <!-- #IF {{category.parents}} -->
+                    <!-- #FOREACH {{pcat in category.parents}} -->
+                        <li class="crumb"><a href="{{pcat.url}}">{{pcat}}</a></li>
+                    <!-- #NEXT -->
+    
+                <!-- #ENDIF -->
+                <li class="crumb current"><a href="{{category.url}}">{{category.name}}</a></li>
+            <!-- #ELSE -->
+                <li class="crumb back"><a href="javascript:history.go(-1)">Back to List</a></li>
+            <!-- #ENDIF -->
+            <li class="crumb last"><a href="{{product.url}}">{{product}}</a></li>
+        </ol>
+    </div>
+
+<!-- #ENDBLOCK -->
+
+
+
+<!-- #BLOCK for="content_area" -->
+
+
+    <!-- #IF {{product.previous}} -->
+    <div class="bigprev">
+        <a href="{{product.previous.url}}">
+            <h3>{{product.previous}}</h3>
+            <img src="{{product.previous.image}}-50x50.jpg" alt="{{product.previous.name}} / {{product.previous.price | money_dollars}}" />
+        </a>
+     </div>
+    <!-- #ENDIF -->
+
+    <!-- #IF {{product.next}} -->
+    <div class="bignext">
+        <a href="{{product.next.url}}">
+            <h3>{{product.next}}</h3>
+            <img src="{{product.next.image}}-50x50.jpg" alt="{{product.next.name}} / {{product.next.price | money_dollars}}" />
+        </a>
+    </div>
+    <!-- #ENDIF -->
+
+
+
+	<!-- begin product-item -->
+	<div class="hproduct product-item">
+
+
+        <h1 title="{{product.name | html_encode}}">{{product.name | html_encode}} <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{product.editurl}}">(Edit)</a><!-- #ENDIF --></h1>
+
+
+		<div class="product-item-images_area">
+			<div class="product-photo"><img class="photo" src="{{product.image}}-500x750.jpg" alt="{{product.name | html_encode}} / {{product.price | money}}" /></div>
+		</div>
+		
+
+		<div class="product-item-info_area">
+
+
+	        <h2 class="price retail"><span class="currency">{{store.currency_sign}}</span><span class="dollars">{{product.price | money_dollars}}</span><!-- #IF {{product.price | money_cents}} --><span class="cents">.{{product.price | money_cents}}</span><!-- #ENDIF --></h2>
+
+            <!-- #IF {{product.onsale}} -->
+            <p class="price sale">was <del><span class="currency">{{store.currency_sign}}</span><span class="dollars">{{product.fullprice | money_dollars}}</span>
+                <!-- #IF {{product.fullprice | money_cents}} --><span class="cents">.{{product.fullprice | money_cents}}</span><!-- #ENDIF -->
+            </del></p>
+            <!-- #ENDIF -->
+                
+
+            <!-- #IF {{ cart.taxesincluded }} -->
+            <p class="product-details"><span class="inctax">incl. tax</span></p>
+            <!-- #ENDIF -->
+
+
+
+			<!-- #IF {{product.soldout}} -->
+
+    
+                    <!-- // SINGLE VARIAION ONLY #################################### -->
+                    <!-- #IF {{ product.sku }} -->
+					<p><span class="identifier sku"><label class="type"><abbr title="Stock-keeping unit">sku:</abbr></label> <span class="value">{{product.sku | html_encode}}</span></span></p>
+                    <!-- #ENDIF -->
+                    
+                    <div class="product-soldout">
+	                    <p>Sorry, product is sold out.</p>
+                    </div>
+
+    		<!-- #ELSE -->
+
+ 
+				<!-- #IF {{product.disabled}} -->
+
+					<div class="product-disabled">
+                        <h4>This product is currently not available.</h4>
+                        <p>Please <a href="/contact/">email</a> us if you're interested in this product.</p>
+					</div>
+
+
+                        <!-- #IF {{product.variations}} -->
+    
+                            <!-- #FOREACH {{ variation in product.variations }} -->
+                            <p class="variation">
+                            	
+                                <!-- // TO FIX ################################################## -->
+                                <!-- <strong>{{variation}}:</strong> -->
+                                <!-- // TO FIX ################################################## -->
+
+                                <strong>Option:</strong> <!-- #FOREACH {{ option in variation.options }} -->{{option | html_encode}}, <!-- #NEXT -->
+                                
+                            </p>
+                            <!-- #NEXT -->
+                
+                        <!-- #ELSEIF {{product.variation}} -->
+    
+                            <ul class="product-variation">
+                                <!-- #FOREACH {{ option in product.variation.options }} -->
+                                <li class="variation option {{ option.soldout | if('soldout','instock') }}">
+                                
+                                    <strong>{{option | html_encode}}</strong>
+
+                                    <!-- #IF {{ option.soldout }} -->
+
+                                    <span class="stocklevel soldout">Sold Out</span>
+
+                                    <!-- #ELSE -->
+
+                                        <!-- # IF { { store.loggedin } } -->
+                                            <!-- #IF {{option.stocklevel}} -->
+                                            <span class="stocklevel"><span class="stockqty">{{option.stocklevel}}</span> <span class="stockdescription">Instock</span></span>
+                                            <!-- #ENDIF -->
+                                        <!-- # ENDIF -->
+                                    
+                                    <!-- #ENDIF -->
+    
+                                    <!-- #IF {{ option.sku }} -->
+                                    <span class="identifier sku"><abbr title="Stock-keeping unit">sku:</abbr> <span class="value">{{option.sku | html_encode}}</span></span>
+                                    <!-- #ENDIF -->
+                                    
+                                </li>
+                                <!-- #NEXT -->
+                            </ul>
+    
+            
+                        <!-- #ENDIF -->
+
+				<!-- #ELSE -->
+
+
+                    <!-- begin product-add -->
+                    <div class="product-add">		
+                    <form action="/cart/add" method="post" id="form-product">
+                    <input type="hidden" name="returnurl" value="{{page.url}}" />
+                    <input type="hidden" name="product" value="{{product.id}}" />
+    
+                        <fieldset>
+                            <legend>Add to Cart</legend>
+                
+                            <ul class="product-variation">
+    
+                            <!-- #IF {{product.variations}} -->
+                            <!-- // COMBINATION OF VARIAIONS #################################### -->
+                            
+                                            
+                                <!-- #FOREACH {{variation in product.variations}} -->
+                                <li class="variations">
+                                
+                                    <!-- // TO FIX ################################################## -->
+                                    <!-- <label>{{variation}}</label> -->
+                                    <!-- // TO FIX ################################################## -->
+                                    
+                                    <select name="variation" class="select">
+                                        <!-- #FOREACH {{option in variation.options}} -->
+                                           <option value="{{option.id}}">{{option | html_encode}}</option>
+                                        <!-- #NEXT -->
+                                    </select>
+                                    
+                                </li>
+                                <!-- #NEXT -->                      
+                                
+                            <!-- #ELSEIF {{product.variation}} -->							
+                            <!-- // MANY VARIAIONS #################################### -->
+                                
+    
+                                <!-- #FOREACH {{option in product.variation.options}} -->
+                                <li class="variation option {{ option.soldout | if('soldout','instock') }}">
+    
+                                    <label>
+                                    <input name="variation" type="radio" value="{{option.id}}" class="radio" {{ option.soldout | if ('disabled','') }} />
+                                    <span>{{option | html_encode}}</span>
+                                    </label>                                    
+    
+                                    <!-- #IF {{ option.soldout }} -->
+
+	                                    <span class="stocklevel soldout">Sold Out</span>
+
+                                    <!-- #ELSE -->
+    
+                                        <!-- #IF {{ option.stocklevel }} -->
+                                        <span class="stocklevel"><span class="stockqty">{{option.stocklevel}}</span> <span class="stockdescription">Instock</span> <!-- #IF {{ store.loggedin }} --><small>({{option.stocklevel}})</small><!-- #ENDIF --></span>
+                                        <!-- #ENDIF -->
+                                    
+                                    <!-- #ENDIF -->
+    
+    
+                                    <!-- #IF {{ option.sku }} -->
+                                    <span class="identifier sku"><abbr title="Stock-keeping unit">sku:</abbr> <span class="value">{{option.sku | html_encode}}</span></span>
+                                    <!-- #ENDIF -->
+    
+                                </li>
+                                <!-- #NEXT -->
+    
+    
+                            <!-- #ELSE -->
+                            <!-- // SINGLE VARIAION ONLY #################################### -->
+    
+                                <li class="variation option single">
+    
+    
+                                    <!-- // TO FIX ################################################## -->
+                                    <!--
+                                    <label>{{variation}}</label> <span class="stocklevel">{{variation.stocklevel}} <em>Instock</em></span>
+                                    <span class="identifier sku"><abbr title="Stock-keeping unit">sku:</abbr> <span class="value">{{variation.sku | html_encode}}</span></span>
+                                    -->
+                                    <!-- // TO FIX ################################################## -->
+                                    
+                                    
+                                    <span class="stocklevel"><span class="stockqty">{{product.stocklevel}}</span> <span class="stockdescription">Instock</span></span>
+                                    
+                                    <!-- #IF {{ product.sku }} -->
+                                    <span class="identifier sku"><abbr title="Stock-keeping unit">sku:</abbr> <span class="value">{{product.sku | html_encode}}</span></span>
+                                    <!-- #ENDIF -->
+                                
+                                </li>
+                                    
+                            <!-- #ENDIF -->
+                                
+                                <li class="quantity">
+                                    <label><abbr title="Quantity">Qty</abbr></label>
+                                    <input id="quantity" name="quantity" type="text" value="1" maxlength="4" class="text" title="Quantity" />
+                                </li>
+                                
+                                <li class="addtocart">
+                                    <button type="submit" id="addtocart" class="button addtocart" title="Add To Cart">Add To Cart</button>
+        
+                                    <!-- #IF {{cart.items.count}} -->
+                                    <a href="/cart/" class="viewcart" title="View your Shopping Cart">View Cart</a>
+                                    <!-- #ENDIF -->
+                                </li>
+                
+                            </ul>
+                
+                        </fieldset>
+                        </form>
+    
+                </div>
+                <!-- end product-add -->
+
+
+                <!-- #ENDIF -->
+
+            
+            <!-- #ENDIF -->
+
+
+		</div>
+		<!-- end -->
+
+
+
+
+        <!-- #IF {{product.image}} -->
+        <div class="product-photos">
+            <ul>
+                <!-- #FOREACH {{image in product.images}} -->
+                <li><a rel="lightbox-tour" title="{{product.name | html_encode}} - {{product.price | money}}" href="{{image.url}}-1024x1024-90.jpg"><img src="{{image.url}}-50x50-75.jpg" alt="{{image.title | html_encode}}" /></a></li>
+                <!-- #NEXT -->										
+            </ul>			
+        </div>
+    
+        <!-- #ELSEIF {{product.images}} -->         
+        <!-- #ENDIF -->
+
+
+
+		<!-- #IF {{product.description}} -->
+		<div class="product-item-description_area">
+        	        
+			<div class="product-description html">{{product.description}}</div>
+
+		</div>
+		<!-- #ENDIF -->
+
+
+
+
+		<!-- #IF {{products.featured}} -->
+		<div class="product-related_area">
+
+			<div class="product-list featured-small">
+	
+				<h3>Featured</h3>    
+    
+                <div class="list_carousel">
+                    <ul id="product-featured-products">
+                
+                    <!--#FOREACH {{featuredproduct in products.featured | shuffle | pick(16) }} -->
+                    <li>
+
+                        <div class="hproduct product-listitem {{product.slug}}">
+                
+                            <div class="product-photo">
+                                <a title="{{featuredproduct.name | html_encode}} / {{featuredproduct.price | money}}" href="{{featuredproduct.url}}" class="url" rel="product"><img src="{{featuredproduct.image}}-130x139-75.jpg" alt="{{featuredproduct.excerpt | html_encode}}" class="photo" /></a>
+                            </div>
+                
+                            <p class="price">
+                                <!-- #IF {{featuredproduct.onsale}} -->
+                                <del><span class="currency">{{store.currency_sign}}</span><span class="dollars">{{featuredproduct.fullprice | money_dollars}}</span><!-- #IF {{featuredproduct.fullprice | money_cents}} --><span class="cents">.{{featuredproduct.fullprice | money_cents}}</span><!-- #ENDIF --></del>
+                                <!-- #ENDIF -->
+                                <span class="currency">{{store.currency_sign}}</span><span class="dollars">{{featuredproduct.price | money_dollars}}</span><!-- #IF {{featuredproduct.price | money_cents}} --><span class="cents">.{{featuredproduct.price | money_cents}}</span>
+                                <!-- #ENDIF -->
+                            </p>				
+                
+                             <p class="title" title="{{featuredproduct.name | html_encode}} / {{featuredproduct.price | money}}"><a href="{{featuredproduct.url}}" class="url" rel="product" title="{{featuredproduct.name | html_encode}}">{{featuredproduct.name | html_encode}}</a> <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{featuredproduct.editurl}}">(Edit)</a><!-- #ENDIF --></p>
+            
+                        </div>
+
+                    </li>
+                    <!--#NEXT -->
+    
+                    </ul>
+    
+                    <div class="clearfix"></div>
+    
+                    <a id="prev" href="#"><span>prev</span></a>
+                    <a id="next" href="#"><span>next</span></a>
+    
+                    <div class="pagination" id="pagination"></div>
+                    
+                </div>
+                <!-- // list_carousel -->
+                
+            </div>
+				
+		</div>
+		<!-- #ENDIF -->
+
+
+		
+	<div class="clear"></div>
+
+	</div>
+	<!-- end product-item -->
+
+	
+<!-- #ENDBLOCK -->
+
+
+
+<!-- #BLOCK for="script_content" -->
+<script type="text/javascript" src="http://static.store-cdn.com/themes/theme-wholesale/jquery.lightbox.js"></script>
+<script type="text/javascript" language="javascript" src="/themes/wholesale/files/jquery.carouFredSel-4.0.1-packed.js"></script>
+
+<script type="text/javascript" language="javascript">
+	$(function() {
+		$('ul#product-featured-products').carouFredSel({
+
+			items: 4,
+
+			auto: false,
+			prev: {
+			button  : "#prev",
+			key     : "left"
+		
+			},
+			next: {
+
+			button  : "#next",
+			key     : "right"
+			},
+
+			pagination  : "#pagination"
+			
+		});
+	});
+
+</script>
+
+<!-- #ENDBLOCK -->

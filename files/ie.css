@@ -1,0 +1,47 @@
+/* ie.css */
+
+body {min-width:1000px;text-align:center;}
+
+#signin, #userbar, #header, #nav, #pagetitle, .pagemsg_area, #content, #footer, div.page.has_aside { text-align:left; display:inline;overflow-x:hidden;}
+
+#userbar, #header, #nav, #pagetitle, #content, #footer, div.page.has_aside { width:1000px; }
+
+#signin {width:620px;}
+
+div.pagemsg_area { position:absolute; }
+
+
+* html legend {margin:0px -8px 16px 0;padding:0;}
+sup {vertical-align:text-top;}
+sub {vertical-align:text-bottom;}
+html>body p code {*white-space:normal;}
+hr {margin:-8px auto 11px;}
+img {-ms-interpolation-mode:bicubic;}
+
+.clearfix {display:inline-block;}
+* html .clearfix {height:1%;}
+
+fieldset {padding-top:0;}
+legend {margin-top:-0.2em;margin-bottom:1em;margin-left:-0.5em !important;}
+textarea {overflow:auto;}
+label {vertical-align:middle;position:relative;top:-0.25em;}
+input.text, input.title, textarea {background-color:#fff;border:1px solid #bbb;}
+input.text, input.title {height:32px;}
+input.text:focus {border-color:#666;}
+input.text textarea, select {margin:0.5em 0;}
+input.checkbox, input.radio {position:relative;top:.25em;}
+form.inline div, form.inline p {vertical-align:middle;}
+form.inline, input.checkbox, form.inline input.radio, form.inline input.button, form.inline button {margin:0.5em 0;}
+button, input.button {position:relative;top:0.25em;}
+button.button, input.button, a.button{padding:3px 4px;}
+
+/* Logo */
+#logo p { right:30px; }
+
+/* Images Carouse */
+.product-related_area { text-align:center; }
+.product-related_area h3,
+.list_carousel { text-align:left; }
+
+﻿#nav ul.nav-links { height:36px; }
+div#aside div.categories li a { height:26px; }

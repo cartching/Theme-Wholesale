@@ -1,0 +1,190 @@
+<!--/
+	Cartching Template / Theme Wholesale v1.0
+	http://cartching.com | Copyright (c) Cartching, 2011
+/-->
+
+<!-- #EXTENDS file="theme.html" -->
+
+
+<!-- #BLOCK for="head_content" -->
+<meta property="og:site_name" content="{{store | html_encode}}" />
+<meta property="og:title" content="{{page.title | html_encode}}" />
+<!-- #ENDBLOCK -->
+
+
+<!-- #BLOCK for="pagetitle_area" -->
+
+	<!-- #IF {{blog}} -->
+    <!-- #ELSE -->
+    <div class="pagetitle_area">    
+	    <div id="pagetitle">
+        	<div class="container">
+
+				<h1>Doh!</h1>
+
+            </div>
+		</div>
+	</div>
+	<!-- #ENDIF -->
+
+<!-- #ENDBLOCK -->
+
+
+
+<!-- #BLOCK for="aside_area" -->
+
+    <!-- #IF {{blog}} -->
+    <div class="post-nav">
+
+        <!-- #IF {{blog.category}} -->
+            <h4>{{blog.category.name}} Posts</h4>
+        <!-- #ELSEIF {{blog.tag}} -->
+            <h4>{{blog.tag.name}} Posts</h4>
+        <!-- #ELSE -->
+            <h4>Blog Posts</h4>
+        <!-- #ENDIF -->
+
+        <ul>
+            <!-- #FOREACH{{ allblogpost in blog.articles | pick(25) }} -->
+            <li><em>{{ allblogpost.published | date('MMMM') }} {{ allblogpost.published | date('dd') }}, {{ allblogpost.published | date('yyyy') }}</em> <a href="{{allblogpost.url}}" title="Posted on {{allblogpost.published}} - Read full article">{{allblogpost.title | html_encode}}</a> <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{allblogpost.editurl}}">(Edit)</a><!-- #ENDIF --></li>
+            <!-- #NEXT -->
+        </ul>
+
+    </div>
+    <!-- #ELSE -->    
+
+        <h4>Doh!</h4>
+        <p>Nothing to read yet! Check back soon.</p>
+
+    <!-- #ENDIF -->
+
+<!-- #ENDBLOCK -->
+
+
+
+<!-- #BLOCK for="content_area" -->
+<!-- #IF {{blog}} -->
+
+
+    <!-- #IF {{snippets.blog-page-callout}} -->
+
+	<script type="text/javascript" src="http://cachedcommons.org/cache/jquery-cycle/2.8.6/javascripts/jquery-cycle-min.js"></script>
+	<script type="text/javascript">
+		$(".cycle").cycle({
+			fx: 'fade'
+		});
+	</script>
+
+    <div id="blog-page-callout" class="blog-page-callout">
+    	<div class="cycle">{{snippets.blog-page-callout}}</div>
+    </div>    
+    
+    <!-- #ELSE -->
+        
+        <!-- 
+        
+        // Instructions.
+        // - Add a Snippet named "Blog Page Callout"    
+        // - Add Links, Images
+    
+        <div id="blog-page-callout" class="blog-page-callout">
+    
+            <a href="http://"><img src="http://" alt="" title="" /></a>
+        
+        </div>
+        -->
+
+    <!-- #ENDIF -->
+
+
+	
+	<!-- // Blog http://microformats.org/wiki/hatom -->
+	<div class="post list hfeed">
+
+
+		<!-- #var {{pagedarticles = blog.articles | paged(10) }} -->
+        <!-- # FOREACH { { post in blog.articles | pick(10) } } -->
+        <!-- #FOREACH {{ post in pagedarticles }} -->
+
+        <div id="post-{{post.slug}}" class="post-listitem hentry <!-- #IF {{post.category | html_encode}} -->category-{{post.category.slug}} <!-- #ENDIF -->post-{{post.slug}}">
+
+
+			<!-- #IF {{post.image}} -->
+			<div class="post-image"><img src="{{post.image}}-500x800.jpg" alt="{{post.title | html_encode}}" /></div>
+			<!-- #ENDIF -->
+
+			<div class="preview">
+
+                <!-- #IF {{post.category | html_encode}} -->
+                <p class="post-category"><a href="{{post.category.url}}">{{post.category | html_encode}}</a></p>
+                <!-- #ENDIF -->
+    
+                <h3 class="entry-title"><a rel="bookmark" href="{{post.url}}">{{post.title | html_encode}}</a> <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{post.editurl}}">(Edit)</a><!-- #ENDIF --></h3>
+                
+                <div class="info">
+                    <dl class="author-info">
+                        <dt>Posted by</dt>
+                        <dd class="author vcard">
+                            <span class="fn">{{post.author | html_encode}}</span>
+                        </dd>
+                    </dl>
+                    <dl class="published-info">
+                        <dt>Published on</dt>
+                        <dd><abbr class="date published" title="{{post.published | date}}">{{ post.published | date('MMMM') }} {{ post.published | date('dd') }}, {{ post.published | date('yyyy') }}</abbr></dd>
+                    </dl>
+                </div>
+    
+                <!-- # IF {{post.excerpt}} -->
+                <!-- <p class="entry-excerpt">{ { post.excerpt | strip_html } } </p> -->
+                <!-- # ENDIF -->
+        
+                <p class="permalink"><a class="permalink" title="{{post.title | html_encode}}" href="{{post.url}}">Permalink</a></p>
+    
+                <!-- #IF {{post.tags}} -->
+                <p class="tags"><strong>Tags:</strong><!-- #FOREACH {{tag in post.tags}} --> <a href="{{tag.url}}">{{tag}}</a><!-- #NEXT --></p>
+                <!-- #ENDIF -->
+
+			</div>
+
+	
+            <!-- #IF {{post.content}} -->
+            <div class="entry-content html">{{post.content}}</div>
+            <!-- #ENDIF -->
+
+    		<div class="clear"></div>
+
+		</div>
+		<!-- #NEXT -->
+
+	</div>
+	<!-- // -->
+
+
+	<!-- #IF {{pagedarticles.pages}} -->
+		<div class="paging blog bottom">
+            <!-- #IF {{pagedarticles.prevpage}} -->
+            <a href="{{pagedarticles.prevpage.url}}" class="page prev">Previous</a>
+            <!-- #ENDIF -->
+
+            <!-- #IF {{pagedarticles.nextpage}} -->
+            <a href="{{pagedarticles.nextpage.url}}" class="page next">Next</a>
+            <!-- #ENDIF -->
+		</div>
+	<!-- #ENDIF -->
+
+
+<!-- #ELSE -->
+
+	<h2>No current posts.</h2>
+	<p><a href="{{store.url}}">Continue</a></p>
+
+<!-- #ENDIF -->
+
+
+<!-- #ENDBLOCK -->
+
+
+
+<!-- #BLOCK for="script_content" -->
+<script type="text/javascript" src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
+<!-- #ENDBLOCK -->

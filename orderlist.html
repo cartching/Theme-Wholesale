@@ -1,0 +1,65 @@
+<!--/
+	Cartching Template / Theme Wholesale v1.0
+	http://cartching.com | Copyright (c) Cartching, 2011
+/-->
+
+<!-- #EXTENDS file="theme-simple.html" -->
+
+
+<!-- #BLOCK for="pagetitle_area" -->
+
+    <div class="pagetitle_area">    
+	    <div id="pagetitle">
+        	<div class="container">
+
+				<h1>Your Orders</h1>
+
+            </div>
+		</div>
+	</div>
+
+<!-- #ENDBLOCK -->
+
+
+<!-- #BLOCK for="content_area" -->
+
+
+    <!-- #IF {{orders}} -->
+    
+        <div class="orderlist table-generic">
+        <table cellspacing="0">
+            <thead>
+                <tr>
+                    <td>Invoice No.</td>
+                    <td>Order Date</td>
+                    <td>Payment Type</td>
+                    <td>No. Of Items</td>
+                    <td>Total</td>
+                    <td>Status</td>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- #FOREACH {{ order in orders }} -->
+                <tr>
+                    <td><a href="{{order.url}}"><strong>{{order.number}}</strong></a></td>
+                    <td>{{order.placed | datetime}}</td>
+                    <td><span class="{{order.payment.method|uppercase}}">{{order.payment.method|uppercase}}</span></td>
+                    <td>{{order.items.count}} Item(s)</td>
+                    <td>{{order.totalprice | money}}</span><sup>{{order.currencycode}}</sup></td>
+                    <td><span class="status">{{order.status}}</span></td>
+                </tr>
+                <!-- #NEXT -->
+            </tbody>
+        </table>
+        </div>
+        
+    <!-- #ELSE -->
+    
+        <h2>You haven't made any orders yet!</h2>
+        <p><a href="{{store.url}}" class="continue" title="Continue shopping">Continue shopping</a></p>
+    
+    <!-- #ENDIF -->
+
+
+<!-- #ENDBLOCK -->
+

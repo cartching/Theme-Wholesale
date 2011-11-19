@@ -1,0 +1,191 @@
+<!--/
+	Cartching Template / Theme Wholesale v1.0
+	http://cartching.com | Copyright (c) Cartching, 2011
+/-->
+
+<!-- #EXTENDS file="theme-simple.html" -->
+
+
+<!-- #BLOCK for="pagetitle_area" -->
+
+    <div class="pagetitle_area">    
+        <div id="pagetitle">
+            <div class="container">
+    
+            <!-- #IF {{ cart.items }} -->
+    
+            <h1>Hi {{cart.customer.firstname}}! <span class="amount">/ <span class="currency">{{store.currency_sign}}</span><span class="dollars">{{cart.totalprice | money_dollars}}</span><!-- #IF {{cart.totalprice | money_cents}} --><span class="cents">.{{cart.totalprice | money_cents}}</span><!-- #ENDIF --> <abbr class="currency" title="{{store.currency_name}}">{{store.currency}}</abbr></span></h1>
+            <h2> How would you like to pay?</h2>
+            
+            <div class="checkoutprogress">
+                <ol>
+                    <li id="checkoutprogress-cart"><em>1</em> <a href="/cart/" title="Your Cart">Your Cart</a></li>
+                    <li id="checkoutprogress-checkout"><em>2</em> <a href="/checkout/" title="Shipping Detais">Shipping</a></li>
+                    <li id="checkoutprogress-payment" class="active"><em>3</em> <a href="/payment/" title="Payment Detais">Payment</a></li>
+                    <li id="checkoutprogress-receipt"><em>4</em> <span title="Receipt">Receipt</span></li>
+                </ol>
+            </div>
+            
+            <!-- #ELSE -->
+        
+                <h1>Doh!</h1>
+                <h2>Your Cart is empty!<br /><a href="{{store.url}}" class="continue">Continue shopping</a></h2>
+        
+            <!-- #ENDIF -->
+    
+            </div>
+        </div>
+    </div>
+
+<!-- #ENDBLOCK -->
+
+
+
+<!-- #BLOCK for="content_area" -->
+
+
+    <!-- #IF {{ cart.items }} -->
+    <form action="/payment" method="post">
+
+        
+        <div id="payment-method" class="payment-method">
+        <fieldset>
+            <legend>Payment Options</legend>
+            <ul>
+
+            <!-- #IF {{snippets.payment-methods}} -->
+
+                  {{snippets.payment-methods}}
+
+            <!-- #ELSE -->
+
+                <li id="paypal">
+                    <label title="Paypal &amp; Credit Card">
+                    <input type="radio" name="paymentmethod" value="paypal" class="radio" title="Paypal &amp; Credit Card" /> Paypal &amp; Credit Card</label>
+
+					<div class="paymentinfo">
+                        <h3>Pay with Paypal</h3>
+                        <p>Payments with Paypal are safe, secure &amp; encrypted, you don't need a paypal account to use &amp; your details are never stored.</p>
+                        <p><a href="#" onClick="javascript:window.open('https://www.paypal.com/au/cgi-bin/webscr?cmd=xpt/Marketing/popup/OLCWhatIsPayPal-outside','olcwhatispaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=700, height=350'); return false;" title="Click to Read More...">Click here to find out what Pay Pal is.</a></p>
+                    </div>
+
+                </li>
+    
+                <li id="emailinquiry">
+                    <label title="Email Inquiry Order">
+                    <input type="radio" name="paymentmethod" value="email_inquiry" class="radio" title="Email Inquiry Order" /> Email Inquiry</label>
+
+					<div class="paymentinfo">
+                        <h3>Email Inquiry</h3>            
+                        <p>We understand that paying online can be a little daunting for some people, and we are happy for you to place your order without payment and we will get you back to complete the purchase.</p>
+                    </div>
+
+                </li>
+
+            <!-- #ENDIF -->
+
+    
+            </ul>
+        </fieldset>
+        </div>
+        <!--// payment-method -->
+
+    
+        <div class="clear"></div>
+    
+        
+        <div class="cart-totals">
+
+
+			<div class="purchase-details">
+
+                <!-- #IF {{cart.shippingrequired}} -->
+                    <!-- #IF {{cart.shippingaddress.country}} -->
+                    <p class="shipping-msg">Currently Shipping {{cart.items.count}} <em>Item(s)</em> to {{cart.shippingaddress.country}} <!-- #IF {{cart.shippingaddress.postcode}} -->({{cart.shippingaddress.postcode}})<!-- #ENDIF -->, with <strong>{{cart.shipping.carrier}}</strong>.</p>
+                    <!-- #ENDIF -->            
+                <!-- #ENDIF -->    
+    
+			</div>
+
+        
+            <div class="purchase-totals">
+    
+                <ul>
+                    <li class="subtotal">
+                        <span class="first">Cart subtotal <!-- #IF {{cart.taxesincluded}} --><strong>(incl. tax)</strong><!-- #ELSE --><strong>(ex. tax)</strong><!-- #ENDIF --></span>
+                        <span class="last">{{cart.subtotal | money}}</span>
+                    </li>                                     
+        
+                    <!-- #IF {{cart.shippingrequired}} -->
+                        <!-- #IF {{cart.shippingaddress.country}} -->
+                        <!-- // show carrier and pricing -->
+                        <li class="shipping">
+                            <span class="first">Shipping &amp; Handling</span>
+                            <span class="last">{{cart.shipping.cost | money}}</span>
+                        </li>
+                        <!-- #ELSE -->
+                        <!-- // no shipping required -->
+                        <li>
+                            <span class="first">Delivery</span>
+                            <span class="last">No Shipping Required.</span>
+                        </li>
+                        <!-- #ENDIF -->
+                    <!-- #ELSE -->
+                    
+                        <!-- #IF {{cart.shippingaddress.country | not}} -->
+                        <li class="shipping">
+                            <span class="first">Shipping to be added.</span>
+                            <span class="last">{{cart.shipping.cost | money}}</span>
+                        </li>
+                        <!-- #ENDIF -->
+            
+                    <!-- #ENDIF -->                                        
+        
+                    <!-- #IF {{cart.coupon}} -->
+                    <li class="discount">
+                        <span class="first"><em>{{cart.coupon.name}}</em> | Discount <strong>({{cart.discount.percentage}}%)</strong></span>
+                        <span class="last">{{cart.discount.amount | money}}</span>
+                    </li>
+                    <!-- #ENDIF -->
+            
+                    <!-- #IF {{cart.taxesincluded | not}} -->
+                    <li class="tax">
+                        <span class="first">Tax ({{cart.tax.percentage}}%):</span>
+                        <span class="last">{{cart.tax.amount | money}}</span>
+                    </li>
+                    <!-- #ENDIF -->
+            
+                    <li class="total">
+                        <span class="first">Order Total <abbr class="currency" title="{{store.currency_name}}">{{store.currency}}</abbr></span>
+                        <span class="last">{{cart.totalprice | money}}</span>
+                    </li>
+
+                    <!-- #IF {{cart.taxesincluded}} -->
+                    <li class="tax">
+                        <span class="first">Includes Tax ({{cart.tax.percentage}}%):</span>
+                        <span class="last">{{cart.tax.amount | money}}</span>
+                    </li>
+                    <!-- #ENDIF -->
+    
+                </ul>
+        
+            </div>
+            <!--// purchase-totals -->
+
+        
+        </div>
+        
+        
+        <div class="submit payment">
+            <button type="submit" class="button submit" title="Place Your Order">Place Your Order</button>    
+        </div>
+    
+    
+    </form>
+
+
+    <!-- #ELSE -->
+    <!-- #ENDIF -->
+
+
+<!-- #ENDBLOCK -->

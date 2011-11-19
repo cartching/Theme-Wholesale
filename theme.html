@@ -1,0 +1,438 @@
+<!--/
+	Cartching Template / Theme Wholesale v1.0
+	http://cartching.com | Copyright (c) Cartching, 2011
+/-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head profile="http://purl.org/uF/2008/03/ http://purl.org/uF/hAtom/0.1/">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<!-- #BLOCK name="headtitle_content" -->
+<title><!-- #IF {{customer.loggedin}} -->{{page.title | html_encode}}<!-- #ELSE -->Sign In<!-- #ENDIF --> | {{store | html_encode}}</title>
+<!-- #ENDBLOCK -->
+
+<meta http-equiv="imagetoolbar" content="false" />
+<meta http-equiv="imagetoolbar" content="no" />
+<meta name="robots" content="nofollow" />
+<meta name="distribution" content="global" />
+<meta name="copyright" content="{{store | html_encode}}, {{store.url}}" />
+<meta name="author" content="{{store.url}}" />
+<meta name="keywords" content="{{page.keywords | html_encode}}" />
+<meta name="description" content="{{page.description | html_encode}}" />
+
+<link rel="author" href="{{store.url}}" />
+<link rel="home" title="home" href="{{store.url}}" />
+<link rel="canonical" href="{{page.url}}" />
+<link rel="stylesheet" type="text/css" href="http://static.store-cdn.com/themes/theme-wholesale/files/theme.css" media="screen" />
+<!--[if IE]><link rel="stylesheet" type="text/css" href="http://static.store-cdn.com/themes/theme-wholesale/files/ie.css" media="screen" /><![endif]-->
+<link rel="stylesheet" type="text/css" href="{{store.files}}/custom.css" media="screen" />
+
+<script type="text/javascript" src="http://cachedcommons.org/cache/jquery/1.4.2/javascripts/jquery-min.js"></script>
+
+<!-- #BLOCK name="head_content" -->
+<!-- #ENDBLOCK -->
+
+<!-- #IF {{snippets.head-content}} -->
+{{snippets.head-content}}
+<!-- #ELSE -->
+    <!-- 
+        //	- Add a Snippet named "Head Content"
+        //	Example -
+	    //		<meta name="google-site-verification" content="" />
+    -->
+<!-- #ENDIF -->
+
+</head>
+
+
+<!-- #BLOCK name="body_tag" -->    
+<body id="{{page.id}}" class="<!-- #IF {{customer.loggedin}} -->{{page.id}} {{page.template}}<!-- #ELSE -->signin<!-- #ENDIF -->">
+<!-- #ENDBLOCK -->
+
+
+
+
+
+
+
+
+<!-- #IF {{customer.loggedin}} -->
+
+
+
+
+
+<a name="top"></a>
+
+<div class="wrapper">
+
+
+
+
+
+	<div class="userbar_area">
+
+        <div id="userbar" class="userbar loggedin">
+            <ul>
+                <li class="first welcome">Welcome, <strong> {{customer.firstname}}!</strong></li>
+                <li class="account"><a href="/account/">Account</a></li>
+                <li class="orders"><a href="/orders/">Orders</a></li>
+                <li class="cart"><a href="/cart/">Cart / 
+
+					<!-- #IF {{cart.items}} -->
+                	<span class="currency">{{store.currency_sign}}</span><span class="dollars">{{cart.totalprice | money_dollars}}</span> ({{cart.items.count}} items)
+                    <!-- #ELSE -->
+                    <strong>Empty!</strong>
+                    <!-- #ENDIF -->
+                    
+                </a></li>
+                <li class="last signout"><a href="/account/logout?returnurl={{page.url}}">Sign Out</a></li>
+            </ul>
+        </div>
+            
+    </div>
+
+
+
+    <div class="header_area">
+        <div id="header">
+
+            <!-- #IF {{snippets.custom-header-banner}} -->
+        	<div class="custom-header-banner">
+	            {{snippets.custom-header-banner}}
+            </div>
+            <!-- #ELSE -->
+                <!-- 
+                    // - Add a Snippet named "Custom Header Banner"
+                    // <a href="http://image.jpg"><img src="" alt="" /></a> 
+                -->
+
+            <div id="logo">
+                <h2><a href="{{store.url}}" title="{{store | html_encode}}">{{store | html_encode}}</a></h2>
+                <!-- #IF {{page.description}} --><p>{{store.description | html_encode}}</p><!-- #ENDIF -->
+            </div>
+
+            <!-- #ENDIF -->
+
+
+            <!-- #IF {{cart.items.count}} -->
+            <div class="cart-summary hasitems-{{cart.items | if('true', 'false') }}">
+                <h4>Cart Summary</h4>
+                <p class="cart-totals" title="Total Costs {{cart.totalprice | money}} ({{store.currency}}) with {{cart.items.count}} Item(s)">
+                    <a href="/cart/">
+                    <span class="cart-items"><strong>{{cart.items.count}}</strong> <em>Items</em></span>
+                    <span class="cart-total"><span class="currency">{{store.currency_sign}}</span><strong>{{cart.totalprice | money_without_currency}}</strong></span>
+                    </a>
+                </p>
+    
+                <ul class="cart-menu">
+                    <li><a href="/cart/" class="viewcart" title="View Cart and Checkout">Cart</a></li>
+                    <li><a href="/checkout/" class="checkout" title="View Cart and Checkout">Checkout</a></li>
+                </ul>                        
+            </div>
+            <!-- #ENDIF -->
+                                                
+        </div>
+    </div>
+
+
+
+
+	<!-- #IF {{ links.nav }} -->
+	<div class="nav_area">	
+		<div id="nav">
+
+            <ul class="nav-links">
+                <!-- #FOREACH {{link in links.nav}} -->
+                <li class="nav-{{link.slug}}"><a href="{{link.url}}" title="{{link.name | html_encode}}">{{link.name | html_encode}}</a></li>
+                <!-- #NEXT -->
+            </ul>
+
+            <!-- #BLOCK name="breadcrumbs_area" -->
+            <!-- #ENDBLOCK -->
+
+		</div>
+	</div>
+	<!-- #ENDIF -->	
+ 
+        
+
+
+    <!-- #IF {{page.hasmessage}} -->
+    <div class="pagemsg_area">    
+	    <div id="pagemsg" class="msg-{{page.messagetype|lowercase}}">
+    
+            <a href="#" class="close" onClick="$('#pagemsg').slideUp();" title="Click to Close">Close</a>
+            <!-- #IF {{page.hasmessagetitle}} --><h3>{{page.messagetitle}}</h3><!-- #ENDIF -->
+            <!-- #IF {{page.hasmessagedetails}} --><p>{{page.messagedetails}}</p><!-- #ENDIF -->
+
+        </div>
+    </div>
+    <!-- #ENDIF -->
+
+
+
+    <!-- #BLOCK name="pagetitle_area" -->    
+    <div class="pagetitle_area">    
+	    <div id="pagetitle">
+            
+            <h1>{{page.title | html_encode}}</h1>
+            
+		</div>
+	</div>
+    <!-- #ENDBLOCK -->
+
+
+    
+    <div class="content_area">    
+		<div class="has_aside">
+    
+
+            <div id="content">
+	            <div class="container">
+                <!-- #BLOCK name="content_area" -->
+                <!-- #ENDBLOCK -->
+                </div>
+            </div>
+            
+
+            <div id="aside">
+                <div class="container">
+
+
+                <!-- #BLOCK name="aside_area" -->
+
+    
+                    <!-- #IF {{categories.featured}} -->
+                    <div class="categories featured">
+                  
+                      <h4>Featured</h4>
+                      <ul>
+                      <!-- #FOREACH {{navcategory in categories.featured}} -->
+                        <!-- #IF {{navcategory.subcategories}} -->
+    
+                            <li id="subnavcategory-{{navcategory.slug}}" class="subnavcategory">          
+                              <h5><a title="{{navcategory.name | html_encode}}" href="{{navcategory.url}}">{{navcategory.name | html_encode}}</a> <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{navcategory.editurl}}">(Edit)</a><!-- #ENDIF --></h5>
+                              <ul>
+                              <!-- #FOREACH {{subnavcategory in navcategory.subcategories}} -->
+                                <li id="subnavcategory-{{subnavcategory.slug}}"><a title="{{subnavcategory.name | html_encode}}" href="{{subnavcategory.url}}">{{subnavcategory.name | html_encode}}</a> <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{subnavcategory.editurl}}">(Edit)</a><!-- #ENDIF --></li>
+                              <!-- #NEXT -->
+                              </ul>
+                            </li>         
+                            <!-- #ELSE -->
+                            <li id="navcategory-{{navcategory.slug}}" class="navcategory"><a title="{{navcategory.name | html_encode}}" href="{{navcategory.url}}">{{navcategory.name | html_encode}}</a> <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{navcategory.editurl}}">(Edit)</a><!-- #ENDIF --></li>  
+    
+                        <!-- #ENDIF -->
+                      <!-- #NEXT -->
+                      </ul>
+              
+                    </div>
+                    <!-- #ENDIF -->
+
+
+                    <!-- #IF {{categories.all}} -->
+                    <div class="categories featurednot">
+                      
+                        <ul>
+                        <!-- #FOREACH {{navcategory in categories.all }} -->
+                        
+                        <!-- #IF {{navcategory.featured | not}} -->
+                            <!-- #IF {{navcategory.subcategories}} -->
+                        
+                            <li id="subnavcategory-{{navcategory.slug}}" class="subnavcategory">          
+                              <h5><a title="{{navcategory.name | html_encode}}" href="{{navcategory.url}}">{{navcategory.name | html_encode}}</a> <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{navcategory.editurl}}">(Edit)</a><!-- #ENDIF --></h5>
+                              <ul>
+                              <!-- #FOREACH {{subnavcategory in navcategory.subcategories}} -->
+                                <li id="subnavcategory-{{subnavcategory.slug}}"><a title="{{subnavcategory.name | html_encode}}" href="{{subnavcategory.url}}">{{subnavcategory.name | html_encode}}</a> <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{navcategory.editurl}}">(Edit)</a><!-- #ENDIF --></li>
+                              <!-- #NEXT -->
+                              </ul>
+                            </li>         
+                        
+                            <!-- #ELSE -->
+                        
+                            <li id="navcategory-{{navcategory.slug}}" class="navcategory"><a title="{{navcategory.name | html_encode}}" href="{{navcategory.url}}">{{navcategory.name | html_encode}}</a> <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{navcategory.editurl}}">(Edit)</a><!-- #ENDIF --></li>  
+                        
+                            <!-- #ENDIF -->
+                        <!-- #ENDIF -->
+                        
+                        <!-- #NEXT -->
+                        </ul>
+              
+                    </div>
+                     <!-- #ENDIF -->
+
+
+    
+                <!-- #ENDBLOCK -->
+                </div>
+        	</div>
+        
+                    
+        </div>
+	</div>
+ 
+
+
+	<div class="footer_area">    
+	    <div id="footer">
+
+            <div class="nav">                
+                <ul>
+                    <li class="first cart"><a class="viewcart" href="/cart/">Cart / 
+    
+                        <!-- #IF {{cart.items}} -->
+                        <span class="currency">{{store.currency_sign}}</span><span class="dollars">{{cart.totalprice | money_dollars}}</span> ({{cart.items.count}} items)
+                        <!-- #ELSE -->
+                        <strong>Empty!</strong>
+                        <!-- #ENDIF -->
+                        
+                    </a></li>
+                    <li class="account"><a class="account" href="/account/">Account</a></li>
+                    <li class="orders"><a href="/orders/">Orders</a></li>
+                    <li><a href="/account/logout?returnurl={{page.url}}" class="signout">Sign Out</a></li>
+                    <li class="last"><a class="to-top" href="#top">Back to top</a></li>
+                </ul>
+            </div>
+
+            <div class="cite">
+                <p><cite><abbr title="Copyright">&copy;</abbr> {{store | html_encode}} {{now.year}}. All prices <abbr title="{{store.currency_name}}">{{store.currency}}</abbr>.</cite></p>
+                
+                <p class="cartching">Powered by <a href="http://cartching.com/">Cartching</a></p>
+            </div>            
+
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- #ELSE -->
+
+
+
+<!-- #IF {{page.hasmessage}} -->
+<div class="pagemsg_area">    
+    <div id="pagemsg" class="msg-{{page.messagetype|lowercase}}">
+
+        <a href="#" class="close" onClick="$('#pagemsg').slideUp();" title="Click to Close">Close</a>
+        <!-- #IF {{page.hasmessagetitle}} --><h3>{{page.messagetitle}}</h3><!-- #ENDIF -->
+        <!-- #IF {{page.hasmessagedetails}} --><p>{{page.messagedetails}}</p><!-- #ENDIF -->
+
+    </div>
+</div>
+<!-- #ENDIF -->
+
+
+
+<div class="signin_area">
+	<div id="signin">
+
+
+        <div id="logo">
+            <h2><a href="{{store.url}}" title="{{store | html_encode}}">{{store | html_encode}}</a></h2>
+        </div>
+    
+            
+        <div class="account-signin">
+        <fieldset>
+            <legend>Sign In</legend>
+            
+            <!-- #IF {{snippets.account-signin}} -->
+            {{snippets.account-signin}}
+            <!-- #ELSE -->
+            <!-- 
+
+	            //	<p>Message Example</p>
+
+            -->
+            <!-- #ENDIF -->
+
+            
+            <form method="post" name="accountlogin" id="accountlogin" action="/account/login">
+            <input type="hidden" name="returnurl" value="/shop/" />
+                <ul>
+                    <li>
+                        <label>Your Username</label>
+                        <input name="username" type="text" id="username" class="text lrg required" title="Please provide your Username" />
+                    </li>
+                    <li>
+                        <label>Password</label>
+                        <input name="password" type="password" id="password" class="text password lrg required" title="Please provide your Password" />
+                    </li>
+                    <li class="checkbox">
+                        <input type="checkbox" value="1" id="rememberme" name="rememberme" class="checkbox" title="Remember Me" />
+                        <label for="rememberme">Remember Me</label>
+                    </li>
+                    <li class="submit">
+                        <button name="login" type="submit" id="login" class="button login" title="Sign In">Sign In</button>
+                        <a href="#" class="forgotpassword" onClick="$('.account-signin').hide();$('.account-forgotpassword').fadeIn(500);">Forgot Password?</a>
+                    </li>
+                </ul>
+            </form>
+        </fieldset>
+        </div>  
+    
+         
+        <div class="account-forgotpassword" style="display:none;">
+        <fieldset>
+            <legend>Lost Password</legend>
+            <p>Insert your email and we'll send you your sign in details.</p>
+            <form method="post" name="accountsendpassword" id="accountsendpassword" action="/account/sendpassword">
+            <input type="hidden" name="returnUrl" value="/account/sendpassword?returnurl={{page.url}}" />
+            <ul>
+                <li>
+                    <label>Your Email</label>
+                    <input name="email" type="text" id="email" class="text lrg required" title="Please provide your Email Address" />
+                </li>
+                <li class="submit">
+                    <button name="submit" type="submit" id="submit" class="button getpassword" title="Click to email your Account Details to Sign In.">Get</button>
+                    <a href="#" class="cancel" onClick="$('.account-forgotpassword').hide();$('.account-signin').fadeIn(500);">Cancel</a>
+                </li>
+            </ul>
+            </form>
+        </fieldset>
+        </div>
+
+
+        <div class="cite">
+            <p><cite><abbr title="Copyright">&copy;</abbr> {{store | html_encode}} {{now.year}}. All rights reserved.</cite></p>
+            <p class="cartching">Powered by <a href="http://cartching.com/">Cartching</a></p>
+        </div>
+
+
+	</div>    
+</div>
+
+
+
+
+
+<!-- #ENDIF -->
+
+
+
+
+<script type="text/javascript" src="http://cachedcommons.org/cache/jquery-validate/1.7.0/javascripts/jquery-validate-min.js"></script>
+<script type="text/javascript" src="http://static.store-cdn.com/themes/theme-wholesale/files/main.js"></script>
+
+<!-- #BLOCK name="script_content" -->
+<!-- #ENDBLOCK -->
+
+<!-- #IF {{snippets.script-content}} -->
+{{snippets.script-content}}
+<!-- #ELSE -->
+    <!-- 
+        // - Add a Snippet named "Script Content"
+        // Like your Google Anayltics Code    
+    -->
+<!-- #ENDIF -->
+
+</body>
+</html>

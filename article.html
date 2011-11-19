@@ -1,0 +1,110 @@
+<!--/
+	Cartching Template / Theme Wholesale v1.0
+	http://cartching.com | Copyright (c) Cartching, 2011
+/-->
+
+<!-- #EXTENDS file="theme.html" -->
+
+
+<!-- #BLOCK for="head_content" -->
+<meta property="og:site_name" content="{{store | html_encode}}" />
+<meta property="og:title" content="{{page.title | html_encode}}" />
+<!-- #ENDBLOCK -->
+
+
+<!-- #BLOCK for="pagetitle_area" -->
+<!-- #ENDBLOCK -->
+
+
+
+<!-- #BLOCK for="aside_area" -->
+
+
+    <div class="post-nav">
+    <!-- #IF {{blogs.all.articles}} -->
+        <h4>Blog Posts</h4>
+        <ul>
+            <!-- #FOREACH{{ allarticle in blogs.all.articles | pick(25) }} -->            
+            <li><em>{{ allarticle.published | date('MMMM') }} {{ allarticle.published | date('dd') }}, {{ allarticle.published | date('yyyy') }}</em> <a href="{{allarticle.url}}" title="Posted on {{allarticle.published}} - Read full article">{{allarticle.title | html_encode}}</a> <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{allarticle.editurl}}">(Edit)</a><!-- #ENDIF --></li>
+            <!-- #NEXT -->
+        </ul>
+    <!-- #ELSE -->    
+        <h4>Doh!</h4>
+        <p>Nothing to read yet! Check back soon.</p>
+    <!-- #ENDIF -->
+    </div>
+
+
+<!-- #ENDBLOCK -->
+
+
+
+<!-- #BLOCK for="content_area" -->
+
+	<!-- // Article http://microformats.org/wiki/hatom -->
+	<div id="post-{{article.slug}}" class="article hentry post-{{article.slug}} <!-- #FOREACH {{ tag in article.tags}} --> tag-{{tag.slug}}<!-- #NEXT -->">
+
+
+			<!-- #IF {{article.image}} -->
+			<div class="post-image"><img src="{{article.image}}-500x800.jpg" alt="{{article.title | html_encode}}" /></div>
+			<!-- #ENDIF -->
+
+			<div class="preview">
+
+                <!-- #IF {{article.category}} -->
+                <p class="post-category"><a href="{{article.category.url}}">{{article.category | html_encode}}</a></p>
+                <!-- #ENDIF -->
+    
+                <h1 class="entry-title">
+                    <a rel="bookmark" href="{{article.url}}">{{article.title | html_encode}}</a>
+                    <!-- #IF {{store.loggedin}} --><a class="store-edit" href="{{article.editurl}}">(Edit)</a><!-- #ENDIF -->
+                </h1>
+    
+                <div class="info">
+                    <dl class="author-info">
+                        <dt>Posted by</dt>
+                        <dd class="author vcard">
+                            <span class="fn">{{article.author | html_encode}}</span>
+                        </dd>
+                    </dl>
+                    <dl class="published-info">
+                        <dt>Published on</dt>
+                        <dd><abbr class="date published" title="{{article.published | date}}">{{ article.published | date('MMMM') }} {{ article.published | date('dd') }}, {{ article.published | date('yyyy') }}</abbr></dd>                        
+                    </dl>
+                </div>
+    
+                <!-- #IF {{article.excerpt}} -->
+                <p class="entry-excerpt">{{article.excerpt | strip_html }}</p>
+                <!-- #ENDIF -->
+	
+    			<p class="permalink"><a class="permalink" title="{{article.title | html_encode}}" href="{{article.url}}">Permalink</a></p>
+
+                <!-- #IF {{article.tags}} -->
+                <p class="tags"><strong>Tags:</strong><!-- #FOREACH {{tag in article.tags}} --> <a href="{{tag.url}}">{{tag}}</a><!-- #NEXT --></p>
+                <!-- #ENDIF -->
+
+			</div>
+
+			<!-- #IF {{article.content}} -->
+			<div class="entry-content">{{article.content}}</div>
+			<!-- #ENDIF -->
+
+
+	</div>
+    
+    
+    <div class="paging blog bottom">
+    
+        <a href="/blog/" class="back">Back to Blog</a>
+    
+    </div>
+
+
+
+<!-- #ENDBLOCK -->
+
+
+
+<!-- #BLOCK for="script_content" -->
+<script type="text/javascript" src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
+<!-- #ENDBLOCK -->
