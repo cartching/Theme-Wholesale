@@ -65,7 +65,7 @@
         <div class="inner">
     
             <div class="product-photo">
-                <a title="{{product.name | html_encode}} / {{product.price | money}}" href="{{product.url}}" class="url" rel="product"><img src="{{product.image}}-200x230-90.jpg" alt="{{product.excerpt | html_encode}}" class="photo" /></a>
+                <a title="{{product.name | html_encode}} / {{product.price | money}}" href="{{product.url}}" class="url" rel="product"><img src="{{product.image}}?w=200&h=230&crop=true" alt="{{product.excerpt | html_encode}}" class="photo" /></a>
             </div>
     
             <p class="price">

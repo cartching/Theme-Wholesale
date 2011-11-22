@@ -6,12 +6,6 @@
 <!-- #EXTENDS file="theme.html" -->
 
 
-<!-- #BLOCK for="head_content" -->
-<meta property="og:site_name" content="{{store | html_encode}}" />
-<meta property="og:title" content="{{page.title | html_encode}}" />
-<!-- #ENDBLOCK -->
-
-
 <!-- #BLOCK for="pagetitle_area" -->
 
 	<!-- #IF {{blog}} -->
@@ -68,13 +62,6 @@
 
     <!-- #IF {{snippets.blog-page-callout}} -->
 
-	<script type="text/javascript" src="http://cachedcommons.org/cache/jquery-cycle/2.8.6/javascripts/jquery-cycle-min.js"></script>
-	<script type="text/javascript">
-		$(".cycle").cycle({
-			fx: 'fade'
-		});
-	</script>
-
     <div id="blog-page-callout" class="blog-page-callout">
     	<div class="cycle">{{snippets.blog-page-callout}}</div>
     </div>    
@@ -110,7 +97,7 @@
 
 
 			<!-- #IF {{post.image}} -->
-			<div class="post-image"><img src="{{post.image}}-500x800.jpg" alt="{{post.title | html_encode}}" /></div>
+			<div class="post-image"><img src="{{post.image}}?w=500&h=800&crop=false" alt="{{post.title | html_encode}}" /></div>
 			<!-- #ENDIF -->
 
 			<div class="preview">
@@ -186,5 +173,12 @@
 
 
 <!-- #BLOCK for="script_content" -->
-<script type="text/javascript" src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
+<!-- #IF {{snippets.blog-page-callout}} -->
+<script type="text/javascript" src="http://cachedcommons.org/cache/jquery-cycle/2.8.6/javascripts/jquery-cycle-min.js"></script>
+<script type="text/javascript">
+	$(".cycle").cycle({
+		fx: 'fade'
+	});
+</script>
+<!-- #ENDIF -->
 <!-- #ENDBLOCK -->

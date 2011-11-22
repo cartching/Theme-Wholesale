@@ -58,7 +58,7 @@
     <div class="bigprev">
         <a href="{{product.previous.url}}">
             <h3>{{product.previous}}</h3>
-            <img src="{{product.previous.image}}-50x50.jpg" alt="{{product.previous.name}} / {{product.previous.price | money_dollars}}" />
+            <img src="{{product.previous.image}}?w=50&h=50&crop=true" alt="{{product.previous.name}} / {{product.previous.price | money_dollars}}" />
         </a>
      </div>
     <!-- #ENDIF -->
@@ -67,7 +67,7 @@
     <div class="bignext">
         <a href="{{product.next.url}}">
             <h3>{{product.next}}</h3>
-            <img src="{{product.next.image}}-50x50.jpg" alt="{{product.next.name}} / {{product.next.price | money_dollars}}" />
+            <img src="{{product.next.image}}?w=50&h=50&crop=true" alt="{{product.next.name}} / {{product.next.price | money_dollars}}" />
         </a>
     </div>
     <!-- #ENDIF -->
@@ -82,7 +82,7 @@
 
 
 		<div class="product-item-images_area">
-			<div class="product-photo"><img class="photo" src="{{product.image}}-500x750.jpg" alt="{{product.name | html_encode}} / {{product.price | money}}" /></div>
+			<div class="product-photo"><img class="photo" src="{{product.image}}?w=500&h=750&crop=false" alt="{{product.name | html_encode}} / {{product.price | money}}" /></div>
 		</div>
 		
 
@@ -303,7 +303,7 @@
         <div class="product-photos">
             <ul>
                 <!-- #FOREACH {{image in product.images}} -->
-                <li><a rel="lightbox-tour" title="{{product.name | html_encode}} - {{product.price | money}}" href="{{image.url}}-1024x1024-90.jpg"><img src="{{image.url}}-50x50-75.jpg" alt="{{image.title | html_encode}}" /></a></li>
+                <li><a rel="lightbox-tour" title="{{product.name | html_encode}} - {{product.price | money}}" href="{{image.url}}?w=1024&h=1024&crop=false"><img src="{{image.url}}?w=50&h=50&crop=true" alt="{{image.title | html_encode}}" /></a></li>
                 <!-- #NEXT -->										
             </ul>			
         </div>
@@ -340,7 +340,7 @@
                         <div class="hproduct product-listitem {{product.slug}}">
                 
                             <div class="product-photo">
-                                <a title="{{featuredproduct.name | html_encode}} / {{featuredproduct.price | money}}" href="{{featuredproduct.url}}" class="url" rel="product"><img src="{{featuredproduct.image}}-130x139-75.jpg" alt="{{featuredproduct.excerpt | html_encode}}" class="photo" /></a>
+                                <a title="{{featuredproduct.name | html_encode}} / {{featuredproduct.price | money}}" href="{{featuredproduct.url}}" class="url" rel="product"><img src="{{featuredproduct.image}}?w=130&h=139&crop=true" alt="{{featuredproduct.excerpt | html_encode}}" class="photo" /></a>
                             </div>
                 
                             <p class="price">
@@ -388,8 +388,8 @@
 
 
 <!-- #BLOCK for="script_content" -->
-<script type="text/javascript" src="http://static.store-cdn.com/themes/theme-wholesale/jquery.lightbox.js"></script>
-<script type="text/javascript" language="javascript" src="/themes/wholesale/files/jquery.carouFredSel-4.0.1-packed.js"></script>
+<script type="text/javascript" src="{{theme.files}}/jquery.lightbox.js"></script>
+<script type="text/javascript" language="javascript" src="{{theme.files}}/jquery.carouFredSel-4.0.1-packed.js"></script>
 
 <script type="text/javascript" language="javascript">
 	$(function() {
